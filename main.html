@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аватарка для Minecraft PvP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        
+        .avatar-card {
+            width: 320px;
+            height: 320px;
+            background: rgba(13, 17, 28, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .avatar-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .avatar-card::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #ff6b6b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
+            top: -25%;
+            left: -25%;
+            filter: blur(10px);
+            opacity: 0.3;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .username {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(to right, #ff6b6b, #ff8e8e, #ff6b6b);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+            animation: shine 3s linear infinite;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        .tiers-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .tier {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tier::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff6b6b, #4ecdc4);
+        }
+        
+        .tier:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .tier-icon {
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+        
+        .tier-name {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .server-ad {
+            background: linear-gradient(45deg, #3a5fe5, #4ecdc4);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(58, 95, 229, 0.4);
+            animation: pulse 2s infinite;
+            margin-top: 5px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .server-ad:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(58, 95, 229, 0.6);
+            background: linear-gradient(45deg, #4ecdc4, #3a5fe5);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .minecraft-icon {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 20px;
+        }
+        
+        .crystal-fix {
+            filter: hue-rotate(250deg) brightness(1.5) drop-shadow(0 0 3px rgba(100, 150, 255, 0.5));
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .decoration:nth-child(1) {
+            top: -30px;
+            left: -30px;
+        }
+        
+        .decoration:nth-child(2) {
+            bottom: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+        }
+        
+        @media (max-width: 400px) {
+            .avatar-card {
+                width: 280px;
+                height: 280px;
+                padding: 20px;
+            }
+            
+            .username {
+                font-size: 28px;
+                margin-bottom: 15px;
+            }
+            
+            .tiers-container {
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .tier-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .tier {
+                padding: 10px 5px;
+            }
+            
+            .server-ad {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="avatar-card">
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+        
+        <div class="minecraft-icon"><i class="fas fa-cube"></i></div>
+        
+        <div class="username">Karoine</div>
+        
+        <div class="tiers-container">
+            <div class="tier">
+                <div class="tier-icon" style="background-image: url('https://mctiers.com/tier_icons/sword.svg');"></div>
+                <div class="tier-name">LT3</div>
+            </div>
+            
+            <div class="tier">
+                <div class="tier-icon" style="background-image: url('https://mctiers.com/tier_icons/smp.svg');"></div>
+                <div class="tier-name">LT4</div>
+            </div>
+            
+            <div class="tier">
+                <div class="tier-icon crystal-fix" style="background-image: url('https://mctiers.com/tier_icons/vanilla.svg');"></div>
+                <div class="tier-name">HT5</div>
+            </div>
+        </div>
+        
+        <a href="https://triada.gg/" target="_blank" class="server-ad">Triada Best Server</a>
+    </div>
+
+    <script>
+        // Добавляем эффект параллакса при движении мыши
+        document.addEventListener('mousemove', function(e) {
+            const card = document.querySelector('.avatar-card');
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        // Возвращаем карточку в исходное положение, когда мышь покидает область
+        document.querySelector('.avatar-card').addEventListener('mouseleave', function() {
+            this.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+        
+        // Исправление для кристалла (на случай проблем с загрузкой)
+        document.addEventListener('DOMContentLoaded', function() {
+            const crystal = document.querySelector('.crystal-fix');
+            setTimeout(() => {
+                if (crystal.complete && crystal.naturalHeight === 0) {
+                    crystal.style.backgroundImage = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><polygon points=\"50,5 90,50 50,95 10,50\" fill=\"%234ecdc4\" stroke=\"%23fff\" stroke-width=\"2\"/><polygon points=\"50,20 75,50 50,80 25,50\" fill=\"%2372f2e5\" opacity=\"0.7\"/></svg>')";
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
