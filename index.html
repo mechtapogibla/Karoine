@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ffffff;
+            --secondary: #000000;
+            --accent: #888888;
+            --accent-light: #cccccc;
+            --accent-dark: #444444;
+            --bg1: #111111;
+            --bg2: #1a1a1a;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .banner-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), 
+                        url('https://i.pinimg.com/736x/6d/07/08/6d070847a512851f4006a5e8f9ff2cd0.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask: linear-gradient(transparent, black 20%, black 80%, transparent);
+            -webkit-mask: linear-gradient(transparent, black 20%, black 80%, transparent);
+        }
+        
+        .container {
+            width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 30px;
+            background: rgba(10, 10, 10, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, #aaa, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 6s linear infinite;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: var(--accent-light);
+            font-weight: 400;
+        }
+        
+        .content {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .avatar-card {
+            width: 280px;
+            height: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.8));
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .avatar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        
+        .avatar-img {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+        }
+        
+        .avatar-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .avatar-card:hover .avatar-img img {
+            transform: scale(1.05);
+        }
+        
+        .avatar-info {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .nick {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .nick::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .avatar-card:hover .nick::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .tiers-card {
+            flex-grow: 1;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(30, 30, 30, 0.8));
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tiers-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .card-title::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        
+        .tiers-card:hover .card-title::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .tiers {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .tier {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s ease;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+        
+        .tier:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tier img {
+            width: 70px;
+            height: 70px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+        }
+        
+        .tier:hover img {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+        }
+        
+        .tier span {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .triada {
+            text-align: center;
+            background: linear-gradient(to right, var(--accent-dark), var(--accent));
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+        
+        .triada:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1.5px;
+        }
+        
+        .triada::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .triada:hover::before {
+            left: 100%;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 950px) {
+            .container {
+                width: 95%;
+                margin: 20px;
+            }
+            
+            .content {
+                flex-direction: column;
+            }
+            
+            .avatar-card {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+            }
+            
+            .avatar-img {
+                width: 40%;
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .avatar-card {
+                flex-direction: column;
+            }
+            
+            .avatar-img {
+                width: 100%;
+            }
+            
+            .tiers {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner-background"></div>
+    
+    <div class="overlay">
+        <div class="noise"></div>
+        <div class="grid"></div>
+    </div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="title">LT3 монстр</div>
+        </div>
+        
+        <div class="content">
+            <!-- Аватар -->
+            <div class="avatar-card">
+                <div class="avatar-img">
+                    <img src="https://i.pinimg.com/736x/26/c1/e5/26c1e5c64a4dff4e2f74e0ababbc0fc5.jpg" alt="Аватар">
+                </div>
+                <div class="avatar-info">
+                    <div class="nick">Karoine</div>
+                </div>
+            </div>
+            
+            <!-- Тиры -->
+            <div class="tiers-card">
+                <div class="card-title">Мои тиры не завидуйте только...</div>
+                
+                <div class="tiers">
+                    <div class="tier">
+                        <img src="https://mctiers.com/tier_icons/sword.svg" alt="LT3">
+                        <span>LT3</span>
+                    </div>
+                    <div class="tier">
+                        <img src="https://mctiers.com/tier_icons/smp.svg" alt="LT4">
+                        <span>LT4</span>
+                    </div>
+                    <div class="tier">
+                        <img src="https://mctiers.com/tier_icons/vanilla.svg" alt="HT5">
+                        <span>HT5</span>
+                    </div>
+                </div>
+                
+                <a class="triada" href="https://triada.gg" target="_blank" rel="noopener">Triada the best</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}vw`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
